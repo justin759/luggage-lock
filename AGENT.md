@@ -8,7 +8,9 @@ This is a standalone, educational 3D model of a resettable three-dial luggage lo
 
 The active workspace is `/Users/rt/Documents/Antigravity/luggage-lock`. The latest working sources were copied here from `/Users/rt/Documents/Codex/2026-09-11/files-mentioned-by-the-user-codex` when the user changed workspaces. Continue development here.
 
-The deliverable is `outputs/luggage-lock.html`. It embeds its CSS, JavaScript, Three.js r160 UMD build, and the Three.js MIT license. It needs WebGL but no installation or external asset requests. The user explicitly prohibited the Sites skill; the local build and preview do not use Sites or the existing `.openai` metadata.
+The original standalone deliverable is `outputs/luggage-lock.html`. The GitHub Pages deliverable is root `index.html`, generated from the same sources by `work/build.py`. Both files embed CSS, JavaScript, Three.js r160 UMD build, and the Three.js MIT license. They need WebGL but no installation or external asset requests. The user explicitly prohibited the Sites skill; the local build and preview do not use Sites or the existing `.openai` metadata.
+
+The project is now published as a public GitHub repository at `https://github.com/justin759/luggage-lock`. GitHub Pages is enabled from the `main` branch root and serves `https://justin759.github.io/luggage-lock/`. The repository homepage is set to the Pages URL. GitHub CLI was already authenticated as `justin759`; no Safari authentication flow was required during publication.
 
 ## Files and commands
 
@@ -18,12 +20,14 @@ The deliverable is `outputs/luggage-lock.html`. It embeds its CSS, JavaScript, T
 | `work/app/gestures.js` | Shared mouse, pen, and touch gesture controller |
 | `work/app/index.html` | Page template, semantic model controls, educational text |
 | `work/app/style.css` | Page appearance and responsive layouts |
-| `work/build.py` | Embeds the source files into the standalone deliverable |
+| `work/build.py` | Embeds the source files into the standalone deliverables |
 | `work/three.min.js`, `work/three-LICENSE.txt` | Bundled renderer and license |
 | `work/check-reset-clearances.mjs` | Analytic checks of the critical reset clearances |
 | `work/check-gestures.cjs` | Tests production gesture handling with pointer sequences |
 | `outputs/README.md` | User instructions |
 | `outputs/browser-retest.md` | Iteration and verification history |
+| `index.html` | Generated GitHub Pages entry point |
+| `README.md` | Public repository overview and development commands |
 
 Edit the source files rather than the generated HTML, then build:
 
@@ -35,7 +39,7 @@ node work/check-gestures.cjs
 node work/check-reset-clearances.mjs
 ```
 
-Local preview:
+Local preview for the original `outputs/luggage-lock.html` deliverable:
 
 ```sh
 python3 -m http.server 8767 --bind 127.0.0.1 --directory outputs
@@ -49,6 +53,14 @@ python3 -m http.server 8767 --bind 192.168.0.98 --directory outputs
 
 The phone URL is `http://192.168.0.98:8767/luggage-lock.html`. It returned HTTP 200 and exactly matched the current build when checked from the Mac. The address can change when the network changes. The serving Mac and server process must stay running. Only the `outputs` directory is served.
 
+Local preview for the GitHub Pages root:
+
+```sh
+python3 -m http.server 8767 --bind 127.0.0.1
+```
+
+Then open `http://127.0.0.1:8767/`.
+
 ## Development history and accepted behavior
 
 1. Built the educational lock with Cutaway, Assembled, and Exploded views, manual dial selection, opening, and combination setting.
@@ -59,6 +71,7 @@ The phone URL is `http://192.168.0.98:8767/luggage-lock.html`. It returned HTTP 
 6. Centered paired housing index marks and placed the selected digits at the physical crowns of the wheels.
 7. Corrected the return interlock after the user found that the latch could otherwise close while the clutches were disengaged. A broad reset tongue now crosses behind the carriage stop. Clicking the release while setting demonstrates actual contact with that stop.
 8. Applied the latest visual and input changes: overhead lighting, requested material colors, no rendering labels or captions, closer zoom, tap activation, touch wheel dragging, and two-finger pinch zoom.
+9. Initialized the workspace as a Git repository, created the public GitHub repository `justin759/luggage-lock`, pushed `main`, and enabled GitHub Pages from root `index.html`.
 
 Earlier mechanical iterations received independent critic reviews. The crown/interlock iteration ended with a satisfied critic. The latest appearance/touch iteration was self-tested without a critic, as explicitly requested by the user; do not present the earlier verdict as a new review.
 
@@ -115,5 +128,6 @@ There are no part-name labels, caption overlays, or Labels toggle in the renderi
 - Touch activation of the orange release and violet pin completed opening, reset, blocked closing during reset, saving 826, and closing. Dials remained axially fixed and digits remained 826 after saving/closing.
 - Gesture unit checks passed for jitter, small accumulated moves, fast drags, pinch direction, prevention of extra taps, cancellation, a third finger, blur, and orbiting.
 - Syntax and the mechanical clearance sweep passed. No browser runtime errors were observed. The embedded Three.js UMD build retains its existing deprecation warning.
+- GitHub publication checks passed on 12 September 2026. `gh repo create` created and pushed `https://github.com/justin759/luggage-lock`, GitHub Pages built successfully, `curl` returned HTTP 200 for `https://justin759.github.io/luggage-lock/`, and the downloaded page matched local `index.html` by SHA-256: `20d9566049665d79c8c4d7da7564ad9f0fff08013e7b87fb7c93ede5d312a950`.
 
 The internal browser does not support CDP `Input.dispatchTouchEvent`; a temporary Chrome tab was used for multi-touch verification. Touch emulation and viewport overrides were cleared afterward, and the temporary Chrome tab was closed. These were browser-generated touch tests; the LAN preview allows the user to check their physical phone.
